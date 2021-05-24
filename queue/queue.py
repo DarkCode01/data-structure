@@ -71,3 +71,6 @@ class Queue:
       return to_process
     else:
       print("Error: Queue is empty")
+
+  def peek(self):
+    return self.front

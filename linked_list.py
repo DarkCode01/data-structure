@@ -20,10 +20,13 @@ Desventajas:
 
 metodos:
 -> append
+-> append_by
 -> preppend
--> by_index
+-> prepend_by
 -> pop
--> pop_by_index
+-> pop_by
+-> search
+-> reverse
 """
 
 

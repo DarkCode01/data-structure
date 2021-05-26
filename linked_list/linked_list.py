@@ -35,12 +35,16 @@ class Node:
     self.value = value
     self.next = _next
   
+  def __repr__(self):
+    return self.__str__()
+
   def __str__(self):
     return f"Node({self.value})"
 
 class LinkedList:
   def __init__(self):
     self.head = None
+    self.size = 0
   
   def __repr__(self):
     return self.__str__()
@@ -58,14 +62,7 @@ class LinkedList:
     return nodes
 
   def __len__(self):
-    _len = 0
-    current = self.head
-
-    while current:
-      _len += 1
-      current = current.next
-    
-    return _len
+    return self.size
 
   def _get_last(self):
     current = self.head
@@ -75,69 +72,55 @@ class LinkedList:
     
     return current
 
-  def append(self, node):
-    if self.head:
-      last = self._get_last()
-      last.next = node
-    else:
-      self.head = node
+  def _create_node(self, value):
+    return Node(value)
+  
+  def is_empty(self):
+    return self.size == 0
 
-  def append_middle(self, node):
-    middle = (self.__len__() // 2)
-    count = 0
+  def value_at(self, index):
     current = self.head
-    temp = None
+    _index = 0
 
-    while True:
-      if count == middle:
-        temp = current.next
-        current.next = node
-        node.next = temp
-        break
+    while _index != index:
+      current = current.next
+      _index += 1
+    
+    return current
 
-      count += 1
+  def push_front(self, value):
+    node = self._create_node(value)
 
-  def append_by(self, node, reference):
-    if self.head and reference:
-      node.next = reference.next
-      reference.next = node
-    elif self.head and not reference:
-      self.append(node)
-    elif not self.head and reference:
-      self.head = reference
-      reference.next = node
-    else:
+    if not self.head:
       self.head = node
+      return
+    
+    old_head = self.head
+    node.next = old_head
+    self.head = node
+    
+    self.size += 1
 
-  def prepend(self, node):
-    if self.head:
-      prev = self.head
-      node.next = prev
+  def push_back(self, value):
+    node = self._create_node(value)
+
+    if not self.head:
       self.head = node
-    else:
-      self.head = node
+      return
 
-  def prepend_by(self, node, reference=None):
-    if self.head and reference:
-      prev = self.head
+    last = self._get_last()
+    last.next = node
+  
+  def pop_front(self):
+    old_head = self.head
+    new_head = old_head.next
+    self.head = new_head
 
-      while prev.next.value != reference.value:
-        prev = prev.next
-      
-      prev.next = node
-      node.next = reference
+    return old_head
 
-    elif self.head and not reference:
-      self.prepend(node)
-    elif not self.head and reference:
-      self.head = node
-      node.next = reference
-    else:
-      self.head = node
-
-  def pop(self):
+  def pop_back(self):
+    current = self.head
     prev = None
-    current = self.head # [1, 2]
 
     while current.next:
       prev = current
@@ -148,28 +131,54 @@ class LinkedList:
     else:
       prev.next = None
 
-    del current
+    self.size -= 1
 
-  def pop_by(self, node):
+    return  current
+
+  def front(self):
+    return self.head
+
+  def back(self):
+    return self._get_last()
+
+  def insert(self, index, value):
+    node = self._create_node(value)
     current = self.head
-    prev = None
+    prev= None
+    _index = 0
 
-    if current.value != node.value:
-      while True:
-        if current.value == node.value:
-          prev.next = current.next
-          del current
-          break
-        
-        prev = current
-        current = current.next
+    while _index < index:
+      prev = current
+      current = current.next
+      _index += 1
+
+    prev.next = node
+    node.next = current
+    self.size += 1
+
+  def erase(self, index):
+    current = self.head
+    temp = None
+    prev= None
+    _index = 0
+
+    while _index < index:
+      prev = current
+      current = current.next
+      _index += 1
+
+    if prev:
+      prev.next = current.next
+    elif not prev and current.next:
+      self.head = current.next
     else:
-      prev = current.next
-      self.head = prev
-      del current
+      self.head = None
+
+    self.size -= 1
+    temp = current
+    del temp
 
   def reverse(self):
-    # null [1, 2, 3, null]
     prev = None
     current = self.head
     temp = None
@@ -182,15 +191,19 @@ class LinkedList:
 
     self.head = prev
 
-  def search(self, node):
+  def remove_value(self, value):
     current = self.head
-    index = 1
+    prev = None
 
-    while current:
-      if current.value == node.value:
-        break
-
-      current = current.next
-      index += 1
-    
-    return index
+    if current.value != value:
+      while True:
+        if current.value == value:
+          prev.next = current.next
+          del current
+          break
+        
+        prev = current
+        current = current.next
+    else:
+      current = self.erase(0)
+      del current

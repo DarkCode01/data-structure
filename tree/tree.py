@@ -26,4 +26,20 @@ Operaciones:
   -> path
 
 Ojo: Es bueno tener un numero reducido de hijos.
+
+
+Full Binary Tree:
+  -> Tienen hijos o hojas;
+  -> 
+Complete Binary Tree:
+  -> El ultimo nivel puede permitirse el prescindir de algunos de sus hijos.
+  -> El padre del nodo hoja solo tiene un hijo.
+  -> El nodo hoja debe ser el de la izquierda.
+Degenerate Tree:
+  -> Los padres solo tienen un hijo.
+Balanced Tree:
+  -> Inetnta mantener la profundidad de sus dos subarboles al menor posible.
+  -> El balanceo o equilibrio de un arbol hace que algunas operaciones sean mas eficientes.
+  -> Algunos arboles especiales se aprovechan del balanceo. Dependiendo de que tipo de balanceo intentemos
+  user se usa una regla u otra distinta.
 """

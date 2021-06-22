@@ -27,6 +27,10 @@ Operaciones:
 
 Ojo: Es bueno tener un numero reducido de hijos.
 
+Hemos dicho que los árboles son un tipo de grafo,
+de hecho son grafos acíclicos dirigidos y mínimamente conectados.
+
+
 
 Full Binary Tree:
   -> Tienen hijos o hojas;
